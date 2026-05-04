@@ -1,13 +1,12 @@
-export interface ShortenResultData {
-  code: string
-  shortUrl: string
-  statsUrl: string
-  createdAt: string
+export interface ApiSuccessResponse<TData> {
+  success: true
+  data: TData
 }
 
-export interface FormState {
-  result: ShortenResultData | null
+export interface FormState<TResult = ShortenResultData> {
+  result: TResult | null
   error: string | null
+  toastError?: string | null
 }
 
 export interface ShortenResultData {
@@ -61,7 +60,10 @@ export interface StatsLink {
   createdAt: string
 }
 
-export interface StatsResponse {
-  statsLink: StatsLink
+export interface StatsApiData {
+  link: StatsLink
   stats: ClickStats
 }
+
+export type ShortenApiResponse = ApiSuccessResponse<ShortenResultData>
+export type StatsApiResponse = ApiSuccessResponse<StatsApiData>

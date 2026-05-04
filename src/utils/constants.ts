@@ -10,6 +10,7 @@ export const COUNTRY_FLAGS: Record<string, string> = {
   BR: '🇧🇷',
   ES: '🇪🇸',
 }
+
 export const COUNTRY_NAMES: Record<string, string> = {
   US: 'New York, US',
   GB: 'London, GB',
