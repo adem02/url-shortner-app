@@ -1,5 +1,5 @@
 import type {ShortenResultData} from '@/types'
-import {Check, Copy, Share2} from 'lucide-react'
+import {Check, Copy} from 'lucide-react'
 import {useState} from 'react'
 
 interface Props {
@@ -15,21 +15,11 @@ export function ShortenResult({result}: Props) {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const handleShare = () => {
-    navigator.share?.({url: result.shortUrl})
-  }
-
   return (
     <div className="max-w-3xl w-full mx-auto mt-6 animate-in fade-in slide-in-from-top-4">
       <div
         className="bg-[#e2e8f8] rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#0058be]/20">
         <div className="flex items-center gap-4">
-          <div className="bg-white p-2 rounded-lg shadow-sm">
-            <div
-              className="w-16 h-16 bg-slate-100 flex items-center justify-center border border-slate-200 text-xs text-slate-400">
-              QR
-            </div>
-          </div>
           <div className="text-left">
             <p className="text-xs font-semibold text-[#0058be] uppercase tracking-wider mb-1">
               Your short link is ready
@@ -46,12 +36,6 @@ export function ShortenResult({result}: Props) {
           >
             {copied ? <Check size={16} className="text-[#006c49]"/> : <Copy size={16}/>}
             {copied ? 'Copied!' : 'Copy'}
-          </button>
-          <button
-            onClick={handleShare}
-            className="flex items-center justify-center h-11 w-11 bg-white border border-[#c2c6d6] rounded-lg hover:bg-[#f0f3ff] transition-colors shadow-sm cursor-pointer"
-          >
-            <Share2 size={16}/>
           </button>
         </div>
       </div>
