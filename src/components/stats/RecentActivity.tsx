@@ -1,6 +1,6 @@
 import type {ReactNode} from "react";
 import type {RecentClick} from '@/types'
-import {Laptop, Smartphone, Tablet} from "lucide-react";
+import {Laptop, Smartphone, Tablet, Globe} from "lucide-react";
 import {COUNTRY_FLAGS, COUNTRY_NAMES} from "@/utils/constants.ts";
 
 interface Props {
@@ -32,7 +32,7 @@ export function RecentActivity({recentClicks}: Props) {
     <div className="bg-white rounded-xl shadow-sm border border-[#c2c6d6]/30 overflow-hidden mb-12">
       <div className="p-6 border-b border-[#c2c6d6]/30 flex justify-between items-center">
         <h3 className="text-xl font-semibold text-[#151c27]">Recent Activity</h3>
-        <button className="text-[#0058be] text-sm font-medium hover:underline">
+        <button className="text-[#0058be] text-sm font-medium hover:underline cursor-pointer">
           View All Logs
         </button>
       </div>
@@ -49,7 +49,13 @@ export function RecentActivity({recentClicks}: Props) {
           </tr>
           </thead>
           <tbody className="divide-y divide-[#c2c6d6]/30">
-          {recentClicks.map((click, index) => (
+          {recentClicks.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="px-6 py-12 text-center text-sm text-[#424754]">
+                No activity recorded yet
+              </td>
+            </tr>
+          ) : recentClicks.map((click, index) => (
             <tr
               key={index}
               className="hover:bg-[#f0f3ff]/50 transition-colors"
@@ -59,7 +65,9 @@ export function RecentActivity({recentClicks}: Props) {
               </td>
               <td className="px-6 py-4 text-sm text-[#151c27]">
                   <span className="mr-2">
-                    {click.country ? (COUNTRY_FLAGS[click.country] ?? '🌐') : '🌐'}
+                    {click.country ? (COUNTRY_FLAGS[click.country] ??
+                            <Globe size={14} className="inline text-[#424754]"/>) :
+                      <Globe size={14} className="inline text-[#424754]"/>}
                   </span>
                 {click.country ? (COUNTRY_NAMES[click.country] ?? click.country) : 'Unknown'}
               </td>

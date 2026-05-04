@@ -17,7 +17,7 @@ export function DataManagement({statsLink, stats}: Props) {
       <div className="flex gap-4">
         <button
           onClick={() => exportToCSV(statsLink, stats)}
-          className="flex items-center gap-2 px-6 py-2.5 bg-white border border-[#c2c6d6] text-[#151c27] text-sm font-medium rounded-lg hover:bg-white active:scale-95 transition-all"
+          className="flex items-center gap-2 px-6 py-2.5 bg-white border border-[#c2c6d6] text-[#151c27] text-sm font-medium rounded-lg hover:bg-white active:scale-95 transition-all cursor-pointer"
         >
           <Download size={18}/>
           Export CSV

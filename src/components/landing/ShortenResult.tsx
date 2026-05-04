@@ -1,25 +1,32 @@
-import type { ShortenResultData } from '@/types'
-import { Copy, Share2 } from 'lucide-react'
+import type {ShortenResultData} from '@/types'
+import {Check, Copy, Share2} from 'lucide-react'
+import {useState} from 'react'
 
 interface Props {
   result: ShortenResultData
 }
 
-export function ShortenResult({ result }: Props) {
+export function ShortenResult({result}: Props) {
+  const [copied, setCopied] = useState(false)
+
   const handleCopy = () => {
     navigator.clipboard.writeText(result.shortUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   const handleShare = () => {
-    navigator.share?.({ url: result.shortUrl })
+    navigator.share?.({url: result.shortUrl})
   }
 
   return (
     <div className="max-w-3xl w-full mx-auto mt-6 animate-in fade-in slide-in-from-top-4">
-      <div className="bg-[#e2e8f8] rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#0058be]/20">
+      <div
+        className="bg-[#e2e8f8] rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-6 border border-[#0058be]/20">
         <div className="flex items-center gap-4">
           <div className="bg-white p-2 rounded-lg shadow-sm">
-            <div className="w-16 h-16 bg-slate-100 flex items-center justify-center border border-slate-200 text-xs text-slate-400">
+            <div
+              className="w-16 h-16 bg-slate-100 flex items-center justify-center border border-slate-200 text-xs text-slate-400">
               QR
             </div>
           </div>
@@ -35,16 +42,16 @@ export function ShortenResult({ result }: Props) {
         <div className="flex gap-2">
           <button
             onClick={handleCopy}
-            className="flex items-center gap-2 h-11 px-4 bg-white border border-[#c2c6d6] rounded-lg text-sm font-medium hover:bg-[#f0f3ff] transition-colors shadow-sm"
+            className="flex items-center gap-2 h-11 px-4 bg-white border border-[#c2c6d6] rounded-lg text-sm font-medium hover:bg-[#f0f3ff] transition-colors shadow-sm cursor-pointer"
           >
-            <Copy size={16} />
-            Copy
+            {copied ? <Check size={16} className="text-[#006c49]"/> : <Copy size={16}/>}
+            {copied ? 'Copied!' : 'Copy'}
           </button>
           <button
             onClick={handleShare}
-            className="flex items-center justify-center h-11 w-11 bg-white border border-[#c2c6d6] rounded-lg hover:bg-[#f0f3ff] transition-colors shadow-sm"
+            className="flex items-center justify-center h-11 w-11 bg-white border border-[#c2c6d6] rounded-lg hover:bg-[#f0f3ff] transition-colors shadow-sm cursor-pointer"
           >
-            <Share2 size={16} />
+            <Share2 size={16}/>
           </button>
         </div>
       </div>

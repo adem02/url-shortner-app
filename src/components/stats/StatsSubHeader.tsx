@@ -1,6 +1,7 @@
-import {ChevronRight, Copy, Pencil, Share2} from 'lucide-react'
+import {ChevronRight, Check, Copy} from 'lucide-react'
 import {Link} from 'react-router'
 import {useScrollDirection} from "@/hooks/useScrollDirection.tsx";
+import {useState} from 'react'
 
 interface Props {
   code: string
@@ -10,8 +11,12 @@ interface Props {
 
 export function StatsSubHeader({code, shortUrl, longUrl}: Props) {
   const {scrollDir, isAtTop} = useScrollDirection()
+  const [copied, setCopied] = useState(false)
+
   const handleCopy = () => {
     navigator.clipboard.writeText(shortUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   return (
@@ -33,10 +38,10 @@ export function StatsSubHeader({code, shortUrl, longUrl}: Props) {
             <h1 className="text-2xl font-semibold text-[#151c27]">{shortUrl}</h1>
             <button
               onClick={handleCopy}
-              className="flex items-center gap-2 px-3 py-1.5 bg-[#2170e4] text-white rounded-lg text-sm font-medium hover:opacity-90 active:scale-95 transition-all"
+              className="flex items-center gap-2 px-3 py-1.5 bg-[#2170e4] text-white rounded-lg text-sm font-medium hover:opacity-90 active:scale-95 transition-all cursor-pointer"
             >
-              <Copy size={16}/>
-              Copy Link
+              {copied ? <Check size={16}/> : <Copy size={16}/>}
+              {copied ? 'Copied!' : 'Copy Link'}
             </button>
           </div>
         </div>
@@ -45,15 +50,6 @@ export function StatsSubHeader({code, shortUrl, longUrl}: Props) {
           <div className="flex flex-col items-end">
             <span className="text-xs text-[#424754]">Target URL</span>
             <span className="text-sm text-[#0058be] truncate max-w-60">{longUrl}</span>
-          </div>
-          <div className="hidden md:block h-10 w-px bg-[#c2c6d6]"/>
-          <div className="flex gap-2">
-            <button className="p-2 text-[#424754] hover:bg-[#e7eefe] rounded-lg transition-colors">
-              <Pencil size={18}/>
-            </button>
-            <button className="p-2 text-[#424754] hover:bg-[#e7eefe] rounded-lg transition-colors">
-              <Share2 size={18}/>
-            </button>
           </div>
         </div>
       </div>

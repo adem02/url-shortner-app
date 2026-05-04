@@ -1,4 +1,5 @@
-import type {FormState} from "@/types";
+import type {FormState, ShortenApiResponse} from "@/types";
+import { ApiClientError, apiRequest } from '@/services/api.service'
 
 export async function shortenAction(
   _prev: FormState,
@@ -6,28 +7,25 @@ export async function shortenAction(
 ): Promise<FormState> {
   const url = formData.get('url') as string
 
-  if (!url) return { result: null, error: 'URL is required' }
+  if (!url) return { result: null, error: 'URL is required', toastError: null }
 
   try {
-    // const response = await fetch(`${import.meta.env.VITE_API_URL}/api/shorten`, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ url }),
-    // })
+    const data = await apiRequest<ShortenApiResponse>('/api/shorten', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url }),
+    })
 
-    // const data = await response.json()
-    //
-    // if (!response.ok) {
-    //   return { result: null, error: data.error?.message || 'Something went wrong' }
-    // }
+    return { result: data.data, error: null, toastError: null }
+  } catch (error) {
+    if (error instanceof ApiClientError) {
+      if (error.mapped.channel === 'inline') {
+        return { result: null, error: error.mapped.message, toastError: null }
+      }
 
-    return { result: {
-        code: 'cdrds',
-        shortUrl: 'sds',
-        statsUrl: 'ssdsd',
-        createdAt: new Date().toDateString()
-      }, error: null }
-  } catch {
-    return { result: null, error: 'Network error. Please try again.' }
+      return { result: null, error: null, toastError: error.mapped.message }
+    }
+
+    return { result: null, error: null, toastError: 'Network error. Please try again.' }
   }
 }
